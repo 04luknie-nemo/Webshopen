@@ -4,15 +4,22 @@ import CheckoutPage from "./pages/checkoutPage";
 import ConfirmationPage from "./pages/confirmationPage";
 import HomePage from "./pages/homePage";
 import ProductDetailPage from "./pages/productDetailPage";
+import MainLayout from "./mainLayout";
 
 export default function App() {
   return (
     <>
-        <AdminPage />
-        <HomePage />
-        <CheckoutPage />
-        <ConfirmationPage />
-        <ProductDetailPage />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainLayout/>}>
+            <Route index element={<HomePage/>}/>
+            <Route path="/product_detail" element={<ProductDetailPage/>}/>
+            <Route path="/confirmation" element={<ConfirmationPage/>}/>
+            <Route path="/checkout" element={<CheckoutPage/>}/>
+            <Route path="/admin" element={<AdminPage/>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
