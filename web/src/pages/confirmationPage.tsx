@@ -1,3 +1,3 @@
 export default function ConfirmationPage() {
-    return(<>jhello</>)
+    return(<>Confirmation Page</>)
 }
