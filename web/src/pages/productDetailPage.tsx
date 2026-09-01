@@ -1,3 +1,3 @@
 export default function ProductDetailPage() {
-    return(<>jhello</>)
+    return(<>Product Detail Page</>)
 }
