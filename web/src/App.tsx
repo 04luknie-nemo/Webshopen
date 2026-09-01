@@ -1,3 +1,17 @@
+import AdminPage from "./pages/adminPage";
+import CheckoutPage from "./pages/checkoutPage";
+import ConfirmationPage from "./pages/confirmationPage";
+import HomePage from "./pages/homePage";
+import ProductDetailPage from "./pages/productDetailPage";
+
 export default function App() {
-  return <>Yoo!</>
+  return (
+    <>
+        <AdminPage />
+        <HomePage />
+        <CheckoutPage />
+        <ConfirmationPage />
+        <ProductDetailPage />
+    </>
+  );
 }
