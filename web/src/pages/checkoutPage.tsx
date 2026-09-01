@@ -1,3 +1,3 @@
 export default function CheckoutPage() {
-    return(<>jhello</>)
+    return(<>Checkout Page</>)
 }
