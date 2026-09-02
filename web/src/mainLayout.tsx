@@ -6,7 +6,7 @@ export default function MainLayout() {
             <header className="p-2 bg-zinc-100 flex">
                 <nav className="flex gap-4">
                     <Link to="/">Home</Link>
-                    <Link to="/product_detail">Product Detail Page</Link>
+                    <Link to="/product/1">Product Detail Page</Link>
                     <Link to="/confirmation">Confirmation Page</Link>
                     <Link to="/checkout">Checkout Page</Link>
                     <Link to="/admin">Admin Page</Link>
