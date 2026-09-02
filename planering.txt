@@ -88,3 +88,20 @@
   2. Egna filer: Eftersom vi delat upp filerna i pages/ kommer vi inte skriva över varandras kod.
   3. Pull Request & Godkännande: När du är klar med en sida skapar du en PR på GitHub. En gruppmedlem kikar snabbt på koden och godkänner innan den mergas till main.
   │ Detta är grymt inför tentan eftersom vi då får se och förstå hur kompisens sida är byggd!
+
+  #------------#
+    ANGÅENDE MUI
+
+    Jämförelse med Tailwind
+
+    Tailwind: className="w-52 bg-green-500" MUI: sx={{ width: 208, bgcolor: "#54d219" }}
+
+    Samma CSS-kunskap överförs, bara annan syntax.
+
+    Rekommenderad ordning att lära sig
+    Börja med sx-prop på enskilda komponenter. Ingen theme-kunskap krävs.
+    Lägg till color- och size-props när du vill använda inbyggda varianter.
+    Bygg theme-objekt när mönster upprepas över flera komponenter.
+    Använd styled() för komponenter du återanvänder ofta med samma anpassning.
+
+    Tailwind och MUI kan kombineras i samma projekt. Stäng av MUI:s CSS-reset om klasser krockar.
