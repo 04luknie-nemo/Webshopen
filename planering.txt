@@ -1,0 +1,90 @@
+🛒 Projektplan: Webbshop (React, TypeScript & API) 
+
+  ## 🌟 Varför detta är det bästa upplägget för vår grupp:
+
+  1. Alla tränar på det som kommer på tentan: Ingen blir fastlåst i bara backend. Alla får bygga sidor i React, skriva TypeScript, hantera sidans minne (State) och bygga formulär.
+  2. Inga krockar i koden (Merge-konflikter): Varje person bygger sina egna sidor i egna filer. Vi rör inte varandras filer i onödan.
+  3. Tydligt och rättvist: Alla har sitt eget ansvarsområde men vi hjälper varandra.
+  ──────
+  ## 📖 Snabb ordlista – Vad betyder egentligen orden?
+  • React Komponent: En återanvändbar byggsten i koden (t.ex. en knapp, en meny eller ett produktkort).
+  • State (Sidans minne): Data som React håller koll på och som kan ändras när användaren klickar runt (t.ex. vilka varor som ligger i varukorgen eller texten man skriver i ett formulär).
+  • Props: Information som skickas från en förälder-komponent till en barn-komponent (t.ex. att skicka produktens pris och bild till ett produktkort).
+  • Client-side Routing (React Router): Gör att webbadressen ändras (t.ex. från / till /checkout) blixtsnabbt utan att hela sidan behöver laddas om från nätet.
+  • Designsystem (t.ex. Mantine / Chakra UI): Ett paket med färdiga, snygga legobitar (knappar, formulärfält, popup-rutor) så vi slipper skriva all CSS själva.
+  • CRUD: De 4 vanliga sakerna man gör med data: Create (skapa), Read (visa), Update (ändra), Delete (ta bort).
+  • LocalStorage: Webbläsarens eget lilla minne som sparar varukorgen så den inte försvinner om man uppdaterar sidan (F5).
+  • Branch & Pull Request (PR): En Branch är din egen arbetskopia av koden. En Pull Request är när du ber en kompis kika på din kod innan den slås ihop (mergas) med huvudgrenen (main).
+  ──────
+  ## 🚀 Steg 1: Det gemensamma uppstartsmötet (ca 1,5 h)
+
+  Vi sitter i ett onlinemöte där en person delar skärm och vi gör grunden tillsammans:
+
+  1. Bestäm tema: Vad ska vi sälja? (T.ex. kaffebönor, växter, sneakers eller retro-spel).
+  2. Välj designsystem: Vi väljer t.ex. Mantine eller Chakra UI (enkla och bra för nybörjare).
+  3. Skapa projektstommen:
+      • Skapa frontend-mappen web/ med Vite (React + TS) och installera designsystemet och React Router.
+      • Skapa backend-mappen api/ med TypeScript och Express.
+  4. Sätt upp alla tomma sidfiler direkt:
+  Vi skapar tomma filer för alla sidor och kopplar in dem i App.tsx:
+      • HomePage.tsx (Startsida)
+      • ProductDetailPage.tsx (Produktsida)
+      • CheckoutPage.tsx (Kassa)
+      • ConfirmationPage.tsx (Orderbekräftelse)
+      • AdminPage.tsx (Adminsida)
+  5. Skapa datamallen (types.ts): Vi skriver ner vad en produkt ska innehålla (id, titel, pris, bild, beskrivning) och gör 6–8 testprodukter.
+  6. Pusha till GitHub: Den som delar skärm laddar upp detta till main. Sedan kör alla git pull på sina egna datorer.
+
+  │ Resultat: Nu har alla tre en identisk och fungerande startpunkt!
+  ──────
+  ## 👥 Steg 2: Uppdelning av arbetet (Sida för sida)
+
+  Nu skapar alla varsin branch på sin dator och bygger sin egen del av React-appen:
+
+                                  PROJEKTET
+                                      │
+             ┌────────────────────────┼────────────────────────┐
+             ▼                        ▼                        ▼
+      👤 PERSON 1              👤 PERSON 2              👤 PERSON 3
+      Startsida & Produkt      Kassa & Bekräftelse      Adminsida & CRUD
+      (Filer i pages/)         (Filer i pages/)         (Filer i pages/)
+
+  ### 👤 Person 1: Startsidan & Produktsidan
+  • Filer att jobba i: src/pages/HomePage.tsx, src/pages/ProductDetailPage.tsx, src/components/ProductCard.tsx.
+  • Vad du bygger och lär dig:
+      • Visar alla produkter i ett snyggt rutnät på startsidan (/).
+      • Gör så att man kan klicka på en produkt och komma till detaljsidan (/product/:id) med hjälp av useParams().
+      • Lägger till en knapp för "Lägg i kundvagn" med en popup-notis (Toast).
+
+
+  ### 👤 Person 2: Kundvagnen & Kassan
+
+  • Filer att jobba i: src/pages/CheckoutPage.tsx, src/pages/ConfirmationPage.tsx, src/context/CartContext.tsx.
+  • Vad du bygger och lär dig:
+      • Skapar kundvagnens globala minne (Context API) och sparar i LocalStorage.
+      • Bygger kassasidan (/checkout) där man kan ändra antal varor, ta bort varor och se totalpriset uppdateras direkt.
+      • Bygger leveransformuläret (namn, adress, e-post) med validering.
+      • Skapar bekräftelsesidan (/confirmation/:id) som visar unikt ordernummer och förhindrar dubbelköp.
+
+
+  ### 👤 Person 3: Adminsidan (CRUD)
+
+  • Filer att jobba i: src/pages/AdminPage.tsx, src/components/AdminProductForm.tsx.
+  • Vad du bygger och lär dig:
+      • Bygger en adminsida (/admin) som listar alla produkter i en tabell/översikt.
+      • Bygger formulär med validering för att lägga till nya produkter och redigera befintliga.
+      • Bygger en knapp för att ta bort produkter.
+      • Lägger till knappen i sidhuvudet (Header) som länkar till Adminsidan.
+  ──────
+  ## 🛠️ Steg 3: Hur gör vi med Backenden (api/)?
+
+  • Läraren har en genomgång i veckan om hur man bygger och kopplar en TypeScript-backend.
+  • Vi bygger grunden i backend tillsammans (ca 1 timme på skärmdelning) efter den lektionen.
+  • Därefter kopplar var och en enkelt ihop sin egen React-sida mot API:et (t.ex. hämtar produkter, sparar en order eller ändrar en produkt).
+  ──────
+  ## 🛡️ Steg 4: Våra Git-regler (Så vi slipper problem)
+
+  1. Ingen pushar direkt till main: Alla jobbar i sin egen branch (t.ex. feature/checkout, feature/homepage, feature/admin).
+  2. Egna filer: Eftersom vi delat upp filerna i pages/ kommer vi inte skriva över varandras kod.
+  3. Pull Request & Godkännande: När du är klar med en sida skapar du en PR på GitHub. En gruppmedlem kikar snabbt på koden och godkänner innan den mergas till main.
+  │ Detta är grymt inför tentan eftersom vi då får se och förstå hur kompisens sida är byggd!
