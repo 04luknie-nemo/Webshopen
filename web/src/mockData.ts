@@ -78,7 +78,7 @@ export const initialProducts: Product[] = [
     title: "Proteinbars Crunchy Caramel (Låda 12st)",
     description: "Underbart goda proteinbars med 20g protein och utan tillsatt socker. Perfekt mellanmål efter träningen.",
     price: 289,
-    imageUrl: "https://images.unsplash.com/photo-1622484216805-4c07b469074d?w=800",
+    imageUrl: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800",
     stock: 25
   }
 ];
