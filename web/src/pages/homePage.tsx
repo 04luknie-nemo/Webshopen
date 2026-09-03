@@ -1,19 +1,21 @@
-import { Container, Typography } from "@mui/material";
+import { Container, Typography, Grid } from "@mui/material";
 import { initialProducts } from "../mockData";
+import ProductCard from "../components/ProductCard";
 export default function HomePage() {
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Typography variant="h3" component="h1" gutterBottom>
         Träningsprodukter
       </Typography>
-      <ul>
+      <Grid container spacing={2}>
         {initialProducts.map((product) => (
-          <li key={product.id}>
-            {product.title}
-            {product.price}:-kr
-          </li>
+          <Grid key={product.id} size={{ xs: 12, sm: 6, md: 4 }}>
+
+            <ProductCard product={product}/>
+           
+          </Grid>
         ))}
-      </ul>
+      </Grid>
     </Container>
   );
 }
