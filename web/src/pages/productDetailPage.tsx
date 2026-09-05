@@ -11,5 +11,12 @@ export default function ProductDetailPage() {
         return <p>Produkten hittades inte.</p>;
     }
 
-    return <h1>{product.title}</h1>;
+    return (
+        <section>
+            <img src={product.imageUrl} alt={product.title} />
+            <h1>{product.title}</h1>
+            <p>{product.description}</p>
+            <p>Pris: {product.price} kr</p>
+        </section>
+    );
 }
