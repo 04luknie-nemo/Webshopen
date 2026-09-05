@@ -1,0 +1,3 @@
+Dont forget npm install, to download eventuall packages.
+Now run npm run db:generate to and npm run db:push to 
+make sure typescript can run getmany() and so on and update database wit "push"
