@@ -7,19 +7,25 @@ import HomePage from "./pages/homePage";
 import ProductDetailPage from "./pages/productDetailPage";
 
 export default function App() {
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<MainLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="/product_detail" element={<ProductDetailPage />} />
-            <Route path="/confirmation" element={<ConfirmationPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
+    return (
+        <>
+            <BrowserRouter>
+                <Routes>
+                    <Route element={<MainLayout />}>
+                        <Route index element={<HomePage />} />
+                        <Route
+                            path="/product/:id"
+                            element={<ProductDetailPage />}
+                        />
+                        <Route
+                            path="/confirmation"
+                            element={<ConfirmationPage />}
+                        />
+                        <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/admin" element={<AdminPage />} />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </>
+    );
 }
