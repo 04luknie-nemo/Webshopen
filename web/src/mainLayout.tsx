@@ -19,6 +19,15 @@ export default function MainLayout() {
           >
             Home
           </Button>
+          <Button
+            variant="contained"
+            // Theme provider ska läggas till, kommer i annat issue
+            color="secondary"
+            component={RouterLink}
+            to="/admin"
+          >
+            Admin
+          </Button>
           <IconButton component={RouterLink} to="/checkout">
             <ShoppingCart />
           </IconButton>
