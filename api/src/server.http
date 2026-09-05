@@ -1,0 +1,10 @@
+###
+GET http://localhost:3000/api/v1/computers
+###
+POST http://localhost:3000/api/v1/items
+Content-Type: application/json
+
+{"name": "jacka"}
+
+###
+GET http://localhost:3000/api/v1/items
