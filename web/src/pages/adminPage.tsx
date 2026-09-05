@@ -15,7 +15,7 @@ export default function AdminPage() {
             return;
 
         const newProduct: Product = {
-            id: 11,
+            id: initialProducts.length + 1,
             title: title,
             description: description,
             price: price,
@@ -24,6 +24,8 @@ export default function AdminPage() {
         }
         console.log(newProduct);
         initialProducts.push(newProduct);
+        // Gör om till json sträng och sätter products till den nya listan
+        localStorage.setItem("products", JSON.stringify(initialProducts));
         setTitle('');
         setDescription('');
         setPrice("");

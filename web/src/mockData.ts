@@ -1,6 +1,10 @@
 import { type Product } from "./types";
 
-export const initialProducts: Product[] = [
+const savedProducts = localStorage.getItem("products");
+
+export const initialProducts: Product[] = savedProducts ? 
+  JSON.parse(savedProducts) : 
+  [
   {
     id: 1,
     title: "Whey 100 Proteinpulver (Choklad)",
