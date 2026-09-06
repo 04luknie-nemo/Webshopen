@@ -1,17 +1,17 @@
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { type Product } from '../types';
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Link as RouterLink } from "react-router";
+import { type Product } from "../types";
 
-interface ProductCardProps{
-  product: Product
-
+interface ProductCardProps {
+  product: Product;
 }
 
-export default function ProductCard({product} : ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -24,16 +24,22 @@ export default function ProductCard({product} : ProductCardProps) {
         <Typography gutterBottom variant="h5" component="div">
           {product.title}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {product.description}
         </Typography>
-        <Typography sx={{mt :2, fontWeight: 'bold'}}>
+        <Typography sx={{ mt: 2, fontWeight: "bold" }}>
           {product.price} sek
         </Typography>
       </CardContent>
       <CardActions>
         <Button size="small">Buy</Button>
-        <Button size="small">Learn More</Button>
+        <Button
+          component={RouterLink}
+          to={`/product/${product.id}`}
+          size="small"
+        >
+          Learn More
+        </Button>
       </CardActions>
     </Card>
   );
