@@ -1,4 +1,4 @@
-import { type Product } from "./types";
+import { type Product, type Customer, type CartItem } from "./types";
 
 const savedProducts = localStorage.getItem("products");
 
@@ -86,3 +86,25 @@ export const initialProducts: Product[] = savedProducts ?
     stock: 25
   }
 ];
+
+export const initialCartItems: CartItem[] = [
+  {
+    product: initialProducts[0], // Whey 100 Proteinpulver (299 kr)
+    quantity: 2,
+  },
+  {
+    product: initialProducts[6], // Shaker Flaska (79 kr)
+    quantity: 1,
+  },
+];
+
+export const mockCustomer: Customer = {
+  id: 1,
+  fullName: "Ola Olausson",
+  email: "ola@example.com",
+  phoneNumber: "070-123 45 67",
+  address: "Storgatan 12",
+  zipCode: "503 38",
+  city: "Borås",
+  country: "Sverige",
+};
