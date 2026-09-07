@@ -1,42 +1,70 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, type SubmitEvent } from "react";
-import { initialProducts } from "../mockData";
 import type { Product } from "../types";
 
+// Hämtar alla produkter från API:t (GET)
 async function getAllProducts() {
   const res = await fetch("/v1/products");
   return res.json();
 }
 
+// Skickar en ny produkt till API:t (POST)
+// Omit<Product, "id"> = samma typ som Product, men utan id
+// (id skapas av databasen, inte av frontend)
+async function addProduct(newProduct: Omit<Product, "id">) {
+  const res = await fetch("/v1/products", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newProduct),
+  });
+  return res.json();
+}
+
 export default function AdminPage() {
+  // State för varje formulärfält
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState<number | "">("");
   const [imageUrl, setImageUrl] = useState("");
   const [stock, setStock] = useState<number | "">("");
 
-  const query = useQuery({
+  // queryClient ger tillgång till react-query cachen,
+  // används för att tvinga fram en ny hämtning senare
+  const queryClient = useQueryClient();
+
+  // Hämtar produktlistan automatiskt när komponenten laddas.
+  // queryKey ["products"] är etiketten på denna data i cachen.
+  const getQuery = useQuery({
     queryKey: ["products"],
     queryFn: getAllProducts,
   });
+  // Kör POST-anropet, men bara när addProductMutation.mutate() anropas,
+  // inte automatiskt som useQuery
+  const addProductMutation = useMutation({
+    mutationFn: addProduct,
+    onSuccess: () => {
+      // Efter en lyckad post, hämta produktlistan igen
+      // så den nya produkten visas utan sidladdning
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
 
-  function addProduct(event: SubmitEvent<HTMLFormElement>) {
+  // Körs när användaren trycker på Submit
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (stock === "" || price === "") return;
 
-    const newProduct: Product = {
-      id: initialProducts.length + 1,
-      title: title,
-      description: description,
-      price: price,
-      imageUrl: imageUrl,
-      stock: stock,
-    };
-    console.log(newProduct);
-    initialProducts.push(newProduct);
-    // Gör om till json sträng och sätter products till den nya listan
-    localStorage.setItem("products", JSON.stringify(initialProducts));
+    // Startar POST-anropet med datan från formuläret
+    addProductMutation.mutate({
+      title,
+      description,
+      price,
+      imageUrl,
+      stock,
+    });
+
+    // Nollställ formuläret efter submit
     setTitle("");
     setDescription("");
     setPrice("");
@@ -46,7 +74,7 @@ export default function AdminPage() {
   return (
     <>
       <form
-        onSubmit={addProduct}
+        onSubmit={handleSubmit}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -101,8 +129,9 @@ export default function AdminPage() {
           Submit
         </button>
       </form>
+      {/* Debug visning av data så man ser direkt ny product */}
       <section>
-        {query.data?.map((product: Product) => (
+        {getQuery.data?.map((product: Product) => (
           <article key={product.id}>
             <h2>{product.title} </h2>
             <p>{product.description}</p>
@@ -113,4 +142,3 @@ export default function AdminPage() {
     </>
   );
 }
-1;
