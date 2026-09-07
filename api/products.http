@@ -1,0 +1,19 @@
+Get http://localhost:3000/v1/products
+###
+Get http://localhost:3000/v1/products/1
+###
+Post http://localhost:3000/v1/products
+Content-Type: application/json
+
+{
+    "title": "Andra testprodukten via api anrop",
+    "description": "Sitter och testar api anropen, första produkten tog jag bort :D",
+    "price": 42069,
+    "imageUrl": "Ingen bild",
+    "stock": 1000
+}
+###
+Put http://localhost:3000/v1/products/1
+###
+Delete http://localhost:3000/v1/products/1
+###
