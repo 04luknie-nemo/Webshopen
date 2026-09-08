@@ -4,7 +4,7 @@
     "dev": "node --watch src/server.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "studio": "prisma studio --url=\"file://./dev.db\""
+    "db:studio": "prisma studio --url=\"file://./dev.db\""
   },
   "dependencies": {
     "@hono/node-server": "^2.1.1",
