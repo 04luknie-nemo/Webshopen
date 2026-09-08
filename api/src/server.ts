@@ -2,6 +2,7 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 import products from "./routes/products.ts";
+import orders from "./routes/orders.ts";
 
 const app = new Hono();
 let count: number = 0;
@@ -25,7 +26,7 @@ app.get("/countReq", (c) => {
 // ROUTES
 app.route("/v1/products", products);
 // app.route("/v1/customers", customers);
-
+app.route("/v1/orders", orders);
 // -- SIMPELT ATT UPPDATERA APIET --
 // app.route("/v2/posts", postsV2);
 
