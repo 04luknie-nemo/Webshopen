@@ -20,10 +20,11 @@ export default function CheckoutPage() {
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     console.log("Form sent");
-
-    const customerDate = Object.fromEntries(new FormData(event.currentTarget));
-    console.log(customerDate);
-    navigate("/confirmation");
+///Tabort detta sen
+    const fakeOrderId = 1;
+    const customerData = Object.fromEntries(new FormData(event.currentTarget));
+    console.log(customerData);
+    navigate("/confirmation/"+fakeOrderId);
   }
   return (
     <Container>
