@@ -1,8 +1,17 @@
-import { Box, Container, Paper, Stack, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Container,
+    Paper,
+    Stack,
+    Typography,
+} from "@mui/material";
 import { useParams } from "react-router";
+import { useCart } from "../context/cartContext";
 import { initialProducts } from "../mockData";
 
 export default function ProductDetailPage() {
+    const { addToCart } = useCart();
     const { id } = useParams();
     const productId = Number(id);
 
@@ -56,6 +65,13 @@ export default function ProductDetailPage() {
                                 ? `${product.stock} st i lager`
                                 : "Slut i lager"}
                         </Typography>
+                        <Button
+                            variant="contained"
+                            onClick={() => addToCart(product)}
+                            disabled={product.stock <= 0}
+                        >
+                            Lägg i kundvagn
+                        </Button>
                     </Stack>
                 </Stack>
             </Paper>
