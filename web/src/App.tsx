@@ -18,7 +18,7 @@ export default function App() {
                             element={<ProductDetailPage />}
                         />
                         <Route
-                            path="/confirmation"
+                            path="/confirmation/:orderId"
                             element={<ConfirmationPage />}
                         />
                         <Route path="/checkout" element={<CheckoutPage />} />

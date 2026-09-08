@@ -32,10 +32,11 @@ export interface CartItem {
 
 export interface Order {
     id: number,
-    totalPrice: number
+    totalPrice: number,
     createdAt: Date,
     estimatedDelivery: Date,
-    customer: Customer
+    customer: Customer,
+    items: CartItem[]
 }
 // export interface Person {
 // }
