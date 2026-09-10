@@ -4,7 +4,7 @@ export const ProductSchema = z.object({
   title: z
     .string({ error: "Titeln måste vara en sträng" })
     .min(4, { error: "Titeln får inte vara kortare än 4 tecken" })
-    .max(15, { error: "Titeln får inte vara längre än 15 tecken" }),
+    .max(15, { error: "Titeln får inte vara längre än 30 tecken" }),
   description: z
     .string({ error: "Beskrivningen måste vara en sträng" })
     .min(10, { error: "Beskrivningen får inte vara kortare än 10 tecken" })
