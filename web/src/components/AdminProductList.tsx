@@ -74,6 +74,7 @@ export function AdminProductList() {
               onClick={() => handleRemoveProduct(product.id)}
               disabled={!checkedIds.includes(product.id)}
               variant="outlined"
+              color="error"
             >
               Ta bort
             </Button>
