@@ -1,43 +1,29 @@
-import { Box, Button, TextField } from "@mui/material";
-import { useState, type SubmitEvent } from "react";
-import type { Product } from "../types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { useForm } from "react-hook-form";
+import {
+  ProductSchema,
+  type ProductInput,
+  type ProductOutput,
+} from "../schemas/product";
 
 type Props = {
-  onSubmit: (data: Omit<Product, "id">) => void;
+  onSubmit: (data: ProductOutput) => void;
 };
 
 export default function AdminProductForm({ onSubmit }: Props) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState<number | "">("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [stock, setStock] = useState<number | "">("");
+  const { register, handleSubmit, formState, reset } = useForm<ProductInput>({
+    resolver: zodResolver(ProductSchema),
+  });
 
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (stock === "" || price === "") return;
-
-    // Startar POST-anropet med datan från formuläret
-    onSubmit({
-      title,
-      description,
-      price,
-      imageUrl,
-      stock,
-    });
-
-    // Nollställ formuläret efter submit
-    setTitle("");
-    setDescription("");
-    setPrice("");
-    setImageUrl("");
-    setStock("");
+  function onFormSubmit(data: ProductInput) {
+    onSubmit(data as ProductOutput);
+    reset();
   }
   return (
     <Box
       component={"form"}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onFormSubmit)}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -45,40 +31,40 @@ export default function AdminProductForm({ onSubmit }: Props) {
         gap: "1rem",
       }}
     >
-      <TextField
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-        type="text"
-        placeholder="Titel"
-      />
-      <TextField
-        value={description}
-        onChange={(event) => setDescription(event.target.value)}
-        type="text"
-        placeholder="Beskrivning"
-      />
-      <TextField
-        value={price}
-        onChange={(event) =>
-          setPrice(event.target.value === "" ? "" : Number(event.target.value))
-        }
-        type="number"
-        placeholder="Pris"
-      />
-      <TextField
-        value={imageUrl}
-        onChange={(event) => setImageUrl(event.target.value)}
-        type="text"
-        placeholder="Url"
-      />
-      <TextField
-        value={stock}
-        onChange={(event) =>
-          setStock(event.target.value === "" ? "" : Number(event.target.value))
-        }
-        type="number"
-        placeholder="Stock"
-      />
+      <Box>
+        <TextField type="text" {...register("title")} placeholder="Titel" />
+        {formState.errors.title && (
+          <Typography>{formState.errors.title.message}</Typography>
+        )}
+      </Box>
+      <Box>
+        <TextField
+          type="text"
+          {...register("description")}
+          placeholder="Beskrivning"
+        />
+        {formState.errors.description && (
+          <Typography>{formState.errors.description.message}</Typography>
+        )}
+      </Box>
+      <Box>
+        <TextField type="number" {...register("price")} placeholder="Pris" />
+        {formState.errors.price && (
+          <Typography>{formState.errors.price.message}</Typography>
+        )}
+      </Box>
+      <Box>
+        <TextField type="text" {...register("imageUrl")} placeholder="Url" />
+        {formState.errors.imageUrl && (
+          <Typography>{formState.errors.imageUrl.message}</Typography>
+        )}
+      </Box>
+      <Box>
+        <TextField type="number" {...register("stock")} placeholder="Stock" />
+        {formState.errors.stock && (
+          <Typography>{formState.errors.stock.message}</Typography>
+        )}
+      </Box>
       <Button sx={{ border: "0.1rem solid grey" }} type="submit">
         Skicka
       </Button>
