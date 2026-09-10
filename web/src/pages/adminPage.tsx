@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import { Alert, Box, Container } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addProduct } from "../api/products";
 import AdminProductForm from "../components/AdminProductForm";
@@ -46,10 +46,10 @@ export default function AdminPage() {
           />
 
           {addProductMutation.isError && (
-            <p>
+            <Alert severity="error">
               Något gick fel med att lägga till produkt:{" "}
               {(addProductMutation.error as Error).message}
-            </p>
+            </Alert>
           )}
         </Container>
 
