@@ -9,11 +9,13 @@ import {
 
 type Props = {
   onSubmit: (data: ProductOutput) => void;
+  defaultValues?: ProductInput;
 };
 
-export default function AdminProductForm({ onSubmit }: Props) {
+export default function AdminProductForm({ onSubmit, defaultValues }: Props) {
   const { register, handleSubmit, formState, reset } = useForm<ProductInput>({
     resolver: zodResolver(ProductSchema),
+    defaultValues,
   });
 
   function onFormSubmit(data: ProductInput) {

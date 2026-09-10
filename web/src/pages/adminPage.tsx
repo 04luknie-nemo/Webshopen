@@ -1,13 +1,29 @@
-import { Alert, Box, Container } from "@mui/material";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addProduct } from "../api/products";
+import {
+  Alert,
+  Box,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { addProduct, editProduct, getAllProducts } from "../api/products";
 import AdminProductForm from "../components/AdminProductForm";
 import { AdminProductList } from "../components/AdminProductList";
+import type { ProductOutput } from "../schemas/product";
 
 export default function AdminPage() {
   // queryClient ger tillgång till react-query cachen,
   // används för att tvinga fram en ny hämtning senare
   const queryClient = useQueryClient();
+  const [editingId, setEditingId] = useState<number | null>(null);
+
+  const getQuery = useQuery({
+    queryKey: ["products"],
+    queryFn: getAllProducts,
+  });
+  const editingProduct = getQuery.data?.find((p) => p.id === editingId) ?? null;
 
   // Kör POST-anropet, men bara när addProductMutation.mutate() anropas,
   // inte automatiskt som useQuery
@@ -19,6 +35,16 @@ export default function AdminPage() {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
+  const editProductMutation = useMutation({
+    mutationFn: editProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+
+  function handleEditProduct(productId: number, data: ProductOutput) {
+    editProductMutation.mutate({ productId, data });
+  }
   return (
     <>
       <Box
@@ -32,6 +58,24 @@ export default function AdminPage() {
           marginTop: "2rem",
         }}
       >
+        <Dialog
+          open={editingId !== null}
+          onClose={() => setEditingId(null)}
+          maxWidth="sm"
+        >
+          <DialogTitle>Redigera Product</DialogTitle>
+          <DialogContent>
+            {editingProduct && (
+              <AdminProductForm
+                defaultValues={editingProduct}
+                onSubmit={(data) => {
+                  handleEditProduct(editingProduct.id, data);
+                  setEditingId(null);
+                }}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
         <Container
           sx={{
             display: "flex",
@@ -54,7 +98,12 @@ export default function AdminPage() {
         </Container>
 
         {/* Produkt listan här */}
-        <AdminProductList />
+        <AdminProductList
+          products={getQuery.data}
+          isError={getQuery.isError}
+          error={getQuery.error}
+          onEdit={setEditingId}
+        />
       </Box>
     </>
   );

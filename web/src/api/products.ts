@@ -31,5 +31,24 @@ export async function removeProduct(productId: number) {
   if (!res.ok) {
     throw new Error("Failed to remove product");
   }
-  return res.json();
+}
+
+export async function editProduct({
+  productId,
+  data,
+}: {
+  productId: number;
+  data: Omit<Product, "id">;
+}) {
+  const res = await fetch("/v1/products/" + productId, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    throw new Error("Failed to edit product");
+  }
+  const result = await res.json();
+  console.log(result);
+  return result;
 }

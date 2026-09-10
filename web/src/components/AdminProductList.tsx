@@ -1,16 +1,18 @@
 import { Alert, Box, Button, Checkbox, Typography } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { getAllProducts, removeProduct } from "../api/products";
+import { removeProduct } from "../api/products";
 import type { Product } from "../types";
 
-export function AdminProductList() {
-  const [checkedIds, setCheckedIds] = useState<number[]>([]);
+type Props = {
+  products: Product[] | undefined;
+  isError: boolean;
+  error: Error | null;
+  onEdit: (productId: number) => void;
+};
 
-  const getQuery = useQuery({
-    queryKey: ["products"],
-    queryFn: getAllProducts,
-  });
+export function AdminProductList({ products, isError, error, onEdit }: Props) {
+  const [checkedIds, setCheckedIds] = useState<number[]>([]);
 
   // queryClient ger tillgång till react-query cachen,
   // används för att tvinga fram en ny hämtning senare
@@ -35,12 +37,11 @@ export function AdminProductList() {
   function handleRemoveProduct(productId: number) {
     removeProductMutation.mutate(productId);
   }
-  if (getQuery.isError) {
-    return (
-      <Alert severity="error">Något gick fel: {getQuery.error.message}</Alert>
-    );
+
+  if (isError) {
+    return <Alert severity="error">Något gick fel: {error?.message}</Alert>;
   }
-  if (!getQuery.data || getQuery.data.length === 0) {
+  if (!products || products.length === 0) {
     return null;
   }
   return (
@@ -56,11 +57,12 @@ export function AdminProductList() {
         overflowY: "auto",
       }}
     >
-      {getQuery.data?.map((product: Product) => (
+      {products.map((product: Product) => (
         <Box component={"article"} key={product.id}>
           <Box
             sx={{
               display: "flex",
+              flex: "1",
               justifyContent: "space-between",
               gap: "1rem",
             }}
@@ -69,15 +71,23 @@ export function AdminProductList() {
               checked={checkedIds.includes(product.id)}
               onChange={(_, checked) => handleCheckedBox(product.id, checked)}
             />
-
-            <Button
-              onClick={() => handleRemoveProduct(product.id)}
-              disabled={!checkedIds.includes(product.id)}
-              variant="outlined"
-              color="error"
-            >
-              Ta bort
-            </Button>
+            <Box sx={{ display: "flex", gap: "1rem" }}>
+              <Button
+                onClick={() => onEdit(product.id)}
+                variant="outlined"
+                color="inherit"
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={() => handleRemoveProduct(product.id)}
+                disabled={!checkedIds.includes(product.id)}
+                variant="outlined"
+                color="error"
+              >
+                Ta bort
+              </Button>
+            </Box>
           </Box>
           <Typography variant="h6">Titel: {product.title} </Typography>
           <Typography variant="body2">
