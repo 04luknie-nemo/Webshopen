@@ -1,15 +1,42 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { logger } from "hono/logger";
-import computer from "./routes/computers.ts";
-import items from "./routes/items.ts";
+import products from "./routes/products.ts";
+import orders from "./routes/orders.ts";
 
-const backendApp = new Hono();
+const app = new Hono();
+let count: number = 0;
 
-backendApp.use(logger())
-backendApp.get("/api", (c) => c.json("Hello World"));
+// MIDDLEWARES
+app.use(logger());
+app.use((_, next) => {
+  count++;
+  return next();
+});
 
-backendApp.route("/api/v1/computers", computer);
-backendApp.route("/api/v1/items", items);
+// ENDPOINTS
+app.get("/", (c) => {
+  return c.text("Hello Hono!");
+});
 
-serve(backendApp);
+app.get("/countReq", (c) => {
+  return c.json(`Du är besökare: ${count}`);
+});
+
+// ROUTES
+app.route("/v1/products", products);
+// app.route("/v1/customers", customers);
+app.route("/v1/orders", orders);
+// -- SIMPELT ATT UPPDATERA APIET --
+// app.route("/v2/posts", postsV2);
+
+// BOOT SERVER
+serve(
+  {
+    fetch: app.fetch,
+    port: 3000,
+  },
+  (info) => {
+    console.log(`Server is running on http://localhost:${info.port}`);
+  },
+);

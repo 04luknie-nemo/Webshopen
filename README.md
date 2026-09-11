@@ -56,26 +56,26 @@ För att bli godkänd på den här uppgiften MÅSTE ni använda GIT och GitHub. 
 - [x] Git & GitHub har använts
 - [x] Projektmappen innehåller en README.md fil - (läs ovan för mer info)
 - [ ] Uppgiften lämnas in i tid!
-- [ ] Ett designsystem/komponentbibliotek används nästintill helt uteslutande för att bygga sidan (ex: MUI, ChakraUI, Mantine, etc).
+- [x] Ett designsystem/komponentbibliotek används nästintill helt uteslutande för att bygga sidan (ex: MUI, ChakraUI, Mantine, etc).
 
 **Home**
 
-- [ ] Ska ha en övergripande layout med header, main & footer.
-- [ ] Startsidan ska lista samtliga produkter.
+- [x] Ska ha en övergripande layout med header, main & footer.
+- [x] Startsidan ska lista samtliga produkter.
 - [ ] Det ska gå att lägga till produkter i kundvagnen (header + toast + ls).
-- [ ] Det ska gå att klicka på en produkt och komma till en detaljsida.
-- [ ] Sidan ska vara responsiv och gå att använda på mobil, tablet & desktop.
+- [x] Det ska gå att klicka på en produkt och komma till en detaljsida.
+- [x] Sidan ska vara responsiv och gå att använda på mobil, tablet & desktop.
 
 **Produkt**
 
-- [ ] Ska ha en övergripande layout med header, main & footer.
+- [x] Ska ha en övergripande layout med header, main & footer.
 - [x] Detaljsidan ska visa all info om en produkt.
 - [ ] Det ska gå att lägga till produkten i kundvagnen (header + toast + ls).
 - [ ] Sidan ska vara responsiv och gå att använda på mobil, tablet & desktop.
 
 **Kundvagn & Checkout**
 
-- [ ] Ska ha en övergripande layout med header, main & footer.
+- [x] Ska ha en övergripande layout med header, main & footer.
 - [ ] Det ska gå att gå till checkoutsidan och se innehållet i kundvagnen (knapp & url).
 - [ ] Det ska gå att se det totala priset i kundvagnen.
 - [ ] Det ska gå att ändra produkterna i kundvagnen (header + vyn + pris + ls).
@@ -86,11 +86,11 @@ För att bli godkänd på den här uppgiften MÅSTE ni använda GIT och GitHub. 
 
 **Admin**
 
-- [ ] Det finns en admin-sida för produkthantering
-- [ ] Det ska gå att se alla produkter på admin sidan
-- [ ] Det går att lägga till produkter via admin sidan
-- [ ] Det går att ta bort produkter via admin sidan
-- [ ] Det går att redigera produkter via admin sidan
-- [ ] Samtliga fält för adminsidans formulär ska ha valideringsregler
+- [x] Det finns en admin-sida för produkthantering
+- [x] Det ska gå att se alla produkter på admin sidan
+- [x] Det går att lägga till produkter via admin sidan
+- [x] Det går att ta bort produkter via admin sidan
+- [x] Det går att redigera produkter via admin sidan
+- [x] Samtliga fält för adminsidans formulär ska ha valideringsregler
 
 _Gjorda krav ska kryssas för._

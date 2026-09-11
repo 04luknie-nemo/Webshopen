@@ -1,47 +1,113 @@
-import { useState, type SubmitEvent } from "react"
-import { initialProducts } from "../mockData"
-import type { Product } from "../types";
+import {
+  Alert,
+  Box,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { addProduct, editProduct, getAllProducts } from "../api/products";
+import AdminProductForm from "../components/AdminProductForm";
+import { AdminProductList } from "../components/AdminProductList";
+import type { ProductOutput } from "../schemas/product";
+
 export default function AdminPage() {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState<number | "">("");
-    const [imageUrl, setImageUrl] = useState("");
-    const [stock, setStock] = useState<number | "">("");
+  // queryClient ger tillgång till react-query cachen,
+  // används för att tvinga fram en ny hämtning senare
+  const queryClient = useQueryClient();
+  const [editingId, setEditingId] = useState<number | null>(null);
 
-    function addProduct(event: SubmitEvent<HTMLFormElement>) {
-        event.preventDefault();
+  const getQuery = useQuery({
+    queryKey: ["products"],
+    queryFn: getAllProducts,
+  });
+  const editingProduct = getQuery.data?.find((p) => p.id === editingId) ?? null;
 
-        if (stock === "" || price === "")
-            return;
+  // Kör POST-anropet, men bara när addProductMutation.mutate() anropas,
+  // inte automatiskt som useQuery
+  const addProductMutation = useMutation({
+    mutationFn: addProduct,
+    onSuccess: () => {
+      // Efter en lyckad post, hämta produktlistan igen
+      // så den nya produkten visas utan sidladdning
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+  const editProductMutation = useMutation({
+    mutationFn: editProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
 
-        const newProduct: Product = {
-            id: initialProducts.length + 1,
-            title: title,
-            description: description,
-            price: price,
-            imageUrl: imageUrl,
-            stock: stock
-        }
-        console.log(newProduct);
-        initialProducts.push(newProduct);
-        // Gör om till json sträng och sätter products till den nya listan
-        localStorage.setItem("products", JSON.stringify(initialProducts));
-        setTitle('');
-        setDescription('');
-        setPrice("");
-        setImageUrl('');
-        setStock("");
-    }
-    return (
-        <>
-            <form onSubmit={addProduct} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'lightblue', width: '20rem', margin: '0 auto', gap: '1rem' }}>
-                <input style={{ border: '0.15rem solid black' }} value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="titel" />
-                <input style={{ border: '0.15rem solid black' }} value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="beskrivning" />
-                <input style={{ border: '0.15rem solid black' }} value={price} onChange={(e) => setPrice(e.target.value === "" ? "" : Number(e.target.value))} type="number" placeholder="pris" />
-                <input style={{ border: '0.15rem solid black' }} value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} type="text" placeholder="url" />
-                <input style={{ border: '0.15rem solid black' }} value={stock} onChange={(e) => setStock(e.target.value === "" ? "" : Number(e.target.value))} type="number" placeholder="stock" />
-                <button style={{ border: '0.15rem solid black' }} type="submit">Submit</button>
-            </form>
-        </>
-    )
-} 1
+  function handleEditProduct(productId: number, data: ProductOutput) {
+    editProductMutation.mutate({ productId, data });
+  }
+  return (
+    <>
+      <Box
+        component={"main"}
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: "center",
+          flex: "1",
+          padding: "1rem",
+          margin: "0",
+          marginTop: "2rem",
+          width: "100%",
+        }}
+      >
+        <Dialog
+          open={editingId !== null}
+          onClose={() => setEditingId(null)}
+          maxWidth="sm"
+        >
+          <DialogTitle>Redigera Product</DialogTitle>
+          <DialogContent>
+            {editingProduct && (
+              <AdminProductForm
+                defaultValues={editingProduct}
+                onSubmit={(data) => {
+                  handleEditProduct(editingProduct.id, data);
+                  setEditingId(null);
+                }}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+        <Container
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "1rem",
+            width: { sx: "100%", md: "30rem" },
+            height: "30rem",
+          }}
+        >
+          <AdminProductForm
+            onSubmit={(data) => addProductMutation.mutate(data)}
+          />
+
+          {addProductMutation.isError && (
+            <Alert severity="error">
+              Något gick fel med att lägga till produkt:{" "}
+              {(addProductMutation.error as Error).message}
+            </Alert>
+          )}
+        </Container>
+
+        {/* Produkt listan här */}
+        <AdminProductList
+          products={getQuery.data}
+          isError={getQuery.isError}
+          error={getQuery.error}
+          onEdit={setEditingId}
+        />
+      </Box>
+    </>
+  );
+}

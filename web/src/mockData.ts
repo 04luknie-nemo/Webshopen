@@ -1,4 +1,4 @@
-import { type Product, type Customer, type CartItem } from "./types";
+import { type Product, type Customer, type CartItem, type Order } from "./types";
 
 const savedProducts = localStorage.getItem("products");
 
@@ -108,3 +108,13 @@ export const mockCustomer: Customer = {
   city: "Borås",
   country: "Sverige",
 };
+
+export const mockOrder: Order = {
+  id: 1,
+  totalPrice: 677,
+  createdAt: new Date(),
+  estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+  customer: mockCustomer,
+  items: initialCartItems,
+};
+

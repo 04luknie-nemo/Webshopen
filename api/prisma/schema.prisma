@@ -10,7 +10,53 @@ datasource db {
   provider = "sqlite"
 }
 
-model Item {
-  id Int @id @default(autoincrement())
-  name String
+model Product {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String
+  price       Decimal
+  imageUrl    String
+  stock       Int
+  orderItems  OrderItem[]
+  cartItems   CartItem[]
+}
+
+model Customer {
+  id          Int    @id @default(autoincrement())
+  fullName    String
+  email       String
+  phoneNumber String
+  address     String
+  zipcode     String
+  city        String
+  country     String
+
+  orders Order[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  price     Decimal
+  quantity  Int
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int
+}
+
+model Order {
+  id                Int         @id @default(autoincrement())
+  totalPrice        Decimal
+  createdAt         DateTime
+  estimatedDelivery DateTime
+  customer          Customer    @relation(fields: [customerId], references: [id])
+  orderItems        OrderItem[]
+  customerId        Int
 }
