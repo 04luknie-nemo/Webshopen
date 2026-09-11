@@ -1,7 +1,21 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Alert, Container, Grid, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { getAllProducts } from "../api/products";
 import ProductCard from "../components/ProductCard";
-import { initialProducts } from "../mockData";
+
 export default function HomePage() {
+  const getQuery = useQuery({
+    queryKey: ["products"],
+    queryFn: getAllProducts,
+  });
+
+  if (getQuery.isError) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 4, textAlign: "center" }}>
+        <Alert severity="error">{getQuery.error.message}</Alert>
+      </Container>
+    );
+  }
   return (
     <Container
       maxWidth="lg"
@@ -21,7 +35,7 @@ export default function HomePage() {
         Träningsprodukter
       </Typography>
       <Grid container spacing={2} sx={{ justifyContent: "center" }}>
-        {initialProducts.map((product) => (
+        {getQuery.data?.map((product) => (
           <Grid
             key={product.id}
             size={{ xs: 12, sm: 6, md: 4 }}
