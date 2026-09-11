@@ -51,11 +51,13 @@ export default function AdminPage() {
         component={"main"}
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: "center",
           flex: "1",
           padding: "1rem",
           margin: "0",
           marginTop: "2rem",
+          width: "100%",
         }}
       >
         <Dialog
@@ -82,7 +84,8 @@ export default function AdminPage() {
             flexDirection: "column",
             justifyContent: "center",
             padding: "1rem",
-            width: "30rem",
+            width: { sx: "100%", md: "30rem" },
+            height: "30rem",
           }}
         >
           <AdminProductForm
