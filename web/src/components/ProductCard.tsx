@@ -13,22 +13,47 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      }}
+    >
       <CardMedia
         component="img"
         alt={product.title}
-        height="200"
         image={product.imageUrl}
+        sx={{ height: "200px", width: "100%", objectFit: "cover" }}
       />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+      <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          sx={{
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
           {product.title}
         </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+        <Typography
+          variant="body2"
+          sx={{
+            color: "text.secondary",
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
           {product.description}
         </Typography>
-        <Typography sx={{ mt: 2, fontWeight: "bold" }}>
-          {product.price} sek
+        <Typography sx={{ mt: "auto", pt: 2, fontWeight: "bold" }}>
+          {product.price.toLocaleString("sv-SE")} sek
         </Typography>
       </CardContent>
       <CardActions>
