@@ -9,32 +9,46 @@ import {
 } from "@mui/material";
 import { type SubmitEvent } from "react";
 import { useNavigate } from "react-router";
-import { initialCartItems } from "../mockData";
+import { useCart } from "../context/cartContext";
+
+
 
 export default function CheckoutPage() {
+  const {cartItems, clearCart} = useCart();
   const navigate = useNavigate();
   let totalAmount = 0;
-  for (const item of initialCartItems) {
+  for (const item of cartItems) {
     totalAmount += item.product.price * item.quantity;
   }
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log("Form sent");
-    ///Tabort detta sen
-    const fakeOrderId = 1;
     const customerData = Object.fromEntries(new FormData(event.currentTarget));
-    console.log(customerData);
-    navigate("/confirmation/" + fakeOrderId);
+    
+    const orderPayload={
+      customer: customerData,
+      items: cartItems,
+      totalPrice: totalAmount,
+    };
+    const res = await fetch("/v1/orders",{
+      method: "Post",
+      headers:{"Content-Type": "application/json"},
+      body: JSON.stringify(orderPayload)
+    
+    });
+    const newOrder = await res.json();
+    clearCart();
+    navigate("/confirmation/" + newOrder.id);
+    
   }
 
   return (
     <Container>
-      <Typography align="center">Checkout</Typography>
+      <Typography align="center">Checkout</Typography> 
 
       <Card sx={{ maxWidth: 500, mx: "auto" }}>
         <CardContent>
           <ul>
-            {initialCartItems.map((item) => (
+            {cartItems.map((item) => (
               <li key={item.product.id}>
                 {item.product.title} Antal: {item.quantity}
                 Price: {item.product.price * item.quantity}:sek
