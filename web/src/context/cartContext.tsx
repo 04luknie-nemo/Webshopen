@@ -5,6 +5,7 @@ import type { CartItem, Product } from "../types";
 interface CartContextType {
     cartItems: CartItem[];
     addToCart: (product: Product) => void;
+    clearCart: () => void;
 }
 
 interface CartProviderProps {
@@ -33,9 +34,12 @@ export function CartProvider({ children }: CartProviderProps) {
             },
         ]);
     }
+    function clearCart(){
+    setCartItems([]);   
+    }
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart }}>
+        <CartContext.Provider value={{ cartItems, addToCart, clearCart }}>
             {children}
         </CartContext.Provider>
     );
@@ -50,3 +54,6 @@ export function useCart() {
 
     return context;
 }
+
+
+
