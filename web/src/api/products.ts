@@ -49,6 +49,5 @@ export async function editProduct({
     throw new Error("Failed to edit product");
   }
   const result = await res.json();
-  console.log(result);
   return result;
 }
