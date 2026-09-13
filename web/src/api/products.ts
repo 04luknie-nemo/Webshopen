@@ -9,6 +9,14 @@ export async function getAllProducts(): Promise<Product[]> {
   return res.json();
 }
 
+export async function getOneProduct(productId:number) {
+  const res = await fetch("/v1/products/" + productId);
+  if (!res.ok) {
+    throw new Error("Failed to fetch product");
+  }
+  return res.json();
+}
+
 // Skickar en ny produkt till API:t (POST)
 // Omit<Product, "id"> = samma typ som Product, men utan id
 // (id skapas av databasen, inte av frontend)

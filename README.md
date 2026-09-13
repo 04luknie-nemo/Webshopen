@@ -76,13 +76,13 @@ För att bli godkänd på den här uppgiften MÅSTE ni använda GIT och GitHub. 
 **Kundvagn & Checkout**
 
 - [x] Ska ha en övergripande layout med header, main & footer.
-- [ ] Det ska gå att gå till checkoutsidan och se innehållet i kundvagnen (knapp & url).
-- [ ] Det ska gå att se det totala priset i kundvagnen.
+- [x] Det ska gå att gå till checkoutsidan och se innehållet i kundvagnen (knapp & url).
+- [x] Det ska gå att se det totala priset i kundvagnen.
 - [ ] Det ska gå att ändra produkterna i kundvagnen (header + vyn + pris + ls).
-- [ ] Det ska gå att ange leveransuppgifter i ett formulär.
+- [x] Det ska gå att ange leveransuppgifter i ett formulär.
 - [ ] Samtliga fält för checkoutsidans formulär ska ha valideringsregler.
 - [ ] Formulären vid utcheckningen ska gå att automatiskt fyllas i.
-- [ ] Bekräftelsesidan ska visa orderdetaljer och leveransuppgifter
+- [x] Bekräftelsesidan ska visa orderdetaljer och leveransuppgifter
 
 **Admin**
 

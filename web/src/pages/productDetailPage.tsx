@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Button,
     Container,
@@ -10,6 +11,8 @@ import { useParams } from "react-router";
 import { useCart } from "../context/cartContext";
 import { useToast } from "../context/toastContext";
 import { initialProducts } from "../mockData";
+import { getOneProduct } from "../api/products";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ProductDetailPage() {
     const { addToCart } = useCart();
@@ -17,7 +20,22 @@ export default function ProductDetailPage() {
     const { id } = useParams();
     const productId = Number(id);
 
-    const product = initialProducts.find((product) => product.id === productId);
+    const getQuery = useQuery({
+        queryKey: ["product", productId.toString()],
+        queryFn: () => getOneProduct(productId)
+    })
+
+    if (getQuery.isError) {
+            return (
+                <Container maxWidth="lg" sx={{ mt: 4, textAlign: "center" }}>
+                    <Alert severity="error">{getQuery.error.message}</Alert>
+                </Container>
+            );
+        }
+    
+
+
+    const product = getQuery.data;
 
     if (!product) {
         return (
