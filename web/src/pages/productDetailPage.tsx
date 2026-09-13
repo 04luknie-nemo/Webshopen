@@ -8,10 +8,12 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router";
 import { useCart } from "../context/cartContext";
+import { useToast } from "../context/toastContext";
 import { initialProducts } from "../mockData";
 
 export default function ProductDetailPage() {
     const { addToCart } = useCart();
+    const { showToast } = useToast();
     const { id } = useParams();
     const productId = Number(id);
 
@@ -67,8 +69,12 @@ export default function ProductDetailPage() {
                         </Typography>
                         <Button
                             variant="contained"
-                            onClick={() => addToCart(product)}
-                            disabled={product.stock <= 0}
+                            onClick={() => {
+                                addToCart(product);
+                                showToast(
+                                    `${product.title} har lagts till i kundvagnen`,
+                                );
+                            }}
                         >
                             Lägg i kundvagn
                         </Button>
