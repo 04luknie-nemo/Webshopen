@@ -6,6 +6,7 @@ interface CartContextType {
     cartItems: CartItem[];
     addToCart: (product: Product) => void;
     clearCart: () => void;
+    totalCount: number;
 }
 
 interface CartProviderProps {
@@ -20,6 +21,7 @@ export function CartProvider({ children }: CartProviderProps) {
 
         return savedCart ? JSON.parse(savedCart) : [];
     });
+    const totalCount:number = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -39,7 +41,7 @@ export function CartProvider({ children }: CartProviderProps) {
     }
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, clearCart }}>
+        <CartContext.Provider value={{ cartItems, addToCart, clearCart, totalCount }}>
             {children}
         </CartContext.Provider>
     );

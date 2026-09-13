@@ -1,6 +1,7 @@
 import { ShoppingCart } from "@mui/icons-material";
 import {
   AppBar,
+  Badge,
   Box,
   Button,
   IconButton,
@@ -8,8 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import { Outlet, Link as RouterLink } from "react-router";
+import { useCart } from "./context/cartContext";
 
 export default function MainLayout() {
+  const { totalCount } = useCart();
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <AppBar
@@ -48,7 +52,22 @@ export default function MainLayout() {
               Admin
             </Button>
             <IconButton component={RouterLink} to="/checkout">
-              <ShoppingCart />
+              <Badge color="error" badgeContent={totalCount} sx={{
+                "& .MuiBadge-badge": {
+                  fontSize: "0.75rem",
+                  height: 20,
+                  minWidth: 20,
+                  borderRadius: "100%",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                  border: "0.15rem solid white",
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                },
+              }} >
+                <ShoppingCart />
+              </Badge>
             </IconButton>
           </Box>
         </Toolbar>
