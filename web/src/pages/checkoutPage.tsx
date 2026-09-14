@@ -11,13 +11,9 @@ import {
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useCart } from "../context/cartContext";
-import {
-  CheckoutSchema,
-  type CheckoutInput,
-} from "../schemas/checkout";
 
 export default function CheckoutPage() {
-  const { cartItems, clearCart } = useCart();
+  const { cartItems, clearCart, updateQuantity } = useCart();
   const navigate = useNavigate();
 
   const {
@@ -64,7 +60,6 @@ export default function CheckoutPage() {
   return (
     <Container>
       <Typography align="center">Checkout</Typography>
-
       <Card sx={{ maxWidth: 500, mx: "auto" }}>
         <CardContent>
           <ul>
@@ -72,6 +67,20 @@ export default function CheckoutPage() {
               <li key={item.product.id}>
                 {item.product.title} Antal: {item.quantity}
                 Price: {item.product.price * item.quantity}:sek
+                <Button
+                  onClick={() =>
+                    updateQuantity(item.product.id, item.quantity + 1)
+                  }
+                >
+                  +
+                </Button>
+                <Button
+                  onClick={() =>
+                    updateQuantity(item.product.id, item.quantity - 1)
+                  }
+                >
+                  -
+                </Button>
               </li>
             ))}
           </ul>
