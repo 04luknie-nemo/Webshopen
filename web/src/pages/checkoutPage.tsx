@@ -11,10 +11,8 @@ import { type SubmitEvent } from "react";
 import { useNavigate } from "react-router";
 import { useCart } from "../context/cartContext";
 
-
-
 export default function CheckoutPage() {
-  const {cartItems, clearCart} = useCart();
+  const { cartItems, clearCart, updateQuantity } = useCart();
   const navigate = useNavigate();
   let totalAmount = 0;
   for (const item of cartItems) {
@@ -23,28 +21,25 @@ export default function CheckoutPage() {
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const customerData = Object.fromEntries(new FormData(event.currentTarget));
-    
-    const orderPayload={
+
+    const orderPayload = {
       customer: customerData,
       items: cartItems,
       totalPrice: totalAmount,
     };
-    const res = await fetch("/v1/orders",{
+    const res = await fetch("/v1/orders", {
       method: "Post",
-      headers:{"Content-Type": "application/json"},
-      body: JSON.stringify(orderPayload)
-    
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderPayload),
     });
     const newOrder = await res.json();
     clearCart();
     navigate("/confirmation/" + newOrder.id);
-    
   }
 
   return (
     <Container>
-      <Typography align="center">Checkout</Typography> 
-
+      <Typography align="center">Checkout</Typography>
       <Card sx={{ maxWidth: 500, mx: "auto" }}>
         <CardContent>
           <ul>
@@ -52,6 +47,20 @@ export default function CheckoutPage() {
               <li key={item.product.id}>
                 {item.product.title} Antal: {item.quantity}
                 Price: {item.product.price * item.quantity}:sek
+                <Button
+                  onClick={() =>
+                    updateQuantity(item.product.id, item.quantity + 1)
+                  }
+                >
+                  +
+                </Button>
+                <Button
+                  onClick={() =>
+                    updateQuantity(item.product.id, item.quantity - 1)
+                  }
+                >
+                  -
+                </Button>
               </li>
             ))}
           </ul>
