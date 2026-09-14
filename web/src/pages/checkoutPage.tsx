@@ -11,6 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useCart } from "../context/cartContext";
+import { CheckoutSchema, type CheckoutInput } from "../schemas/checkout";
 
 export default function CheckoutPage() {
   const { cartItems, clearCart, updateQuantity } = useCart();
