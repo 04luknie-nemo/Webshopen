@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
@@ -7,31 +8,50 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { type SubmitEvent } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useCart } from "../context/cartContext";
 
 export default function CheckoutPage() {
   const { cartItems, clearCart, updateQuantity } = useCart();
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<CheckoutInput>({
+    resolver: zodResolver(CheckoutSchema),
+  });
+
   let totalAmount = 0;
   for (const item of cartItems) {
     totalAmount += item.product.price * item.quantity;
   }
-  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const customerData = Object.fromEntries(new FormData(event.currentTarget));
+
+  async function handleOrderSubmit(customerData: CheckoutInput) {
+    if (cartItems.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
 
     const orderPayload = {
       customer: customerData,
       items: cartItems,
       totalPrice: totalAmount,
     };
+
     const res = await fetch("/v1/orders", {
-      method: "Post",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderPayload),
     });
+
+    if (!res.ok) {
+      alert("Failed to place order. Please try again.");
+      return;
+    }
+
     const newOrder = await res.json();
     clearCart();
     navigate("/confirmation/" + newOrder.id);
@@ -67,22 +87,79 @@ export default function CheckoutPage() {
           Totala summan:{totalAmount}
         </CardContent>
       </Card>
+
       <Card sx={{ maxWidth: 500, mx: "auto", mt: 3 }}>
         <CardContent>
-          <Box component="form" onSubmit={handleSubmit}>
-            <TextField name="fullName" label="FullName"></TextField>
-            <TextField name="address" label="Address"></TextField>
-            <TextField name="zipCode" label="ZipCode"></TextField>
-            <TextField name="city" label="City"></TextField>
-            <TextField name="country" label="Country"></TextField>
-            <TextField name="phoneNumber" label="Phonenumber"></TextField>
-            <TextField name="email" label="Email"></TextField>
+          <Box
+            component="form"
+            onSubmit={handleSubmit(handleOrderSubmit)}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          >
+            <TextField
+              label="Full Name"
+              autoComplete="name"
+              {...register("fullName")}
+              error={!!errors.fullName}
+              helperText={errors.fullName?.message}
+              fullWidth
+            />
+            <TextField
+              label="Address"
+              autoComplete="street-address"
+              {...register("address")}
+              error={!!errors.address}
+              helperText={errors.address?.message}
+              fullWidth
+            />
+            <TextField
+              label="Zip Code"
+              autoComplete="postal-code"
+              {...register("zipCode")}
+              error={!!errors.zipCode}
+              helperText={errors.zipCode?.message}
+              fullWidth
+            />
+            <TextField
+              label="City"
+              autoComplete="address-level2"
+              {...register("city")}
+              error={!!errors.city}
+              helperText={errors.city?.message}
+              fullWidth
+            />
+            <TextField
+              label="Country"
+              autoComplete="country-name"
+              {...register("country")}
+              error={!!errors.country}
+              helperText={errors.country?.message}
+              fullWidth
+            />
+            <TextField
+              label="Phone Number"
+              type="tel"
+              autoComplete="tel"
+              {...register("phoneNumber")}
+              error={!!errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+              fullWidth
+            />
+            <TextField
+              label="Email"
+              type="email"
+              autoComplete="email"
+              {...register("email")}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              fullWidth
+            />
             <Button
               type="submit"
               variant="contained"
               color="primary"
               fullWidth
               size="large"
+              disabled={cartItems.length === 0 || isSubmitting}
             >
               Confirm Order
             </Button>

@@ -7,15 +7,37 @@ export default function ConfirmationPage() {
   const { orderId } = useParams();
 
   const [order, setOrder] = useState<any>(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchOrder() {
-      const res = await fetch("/v1/orders/" + orderId);
-      const data = await res.json();
-      setOrder(data);
+      setOrder(null);
+      setError("");
+      try {
+        const res = await fetch("/v1/orders/" + orderId);
+        if (!res.ok) {
+          setError(res.status === 404 ? "Ordern finns inte." : "Kunde inte hämta ordern.");
+          return;
+        }
+        const data = await res.json();
+        setOrder(data);
+      } catch {
+        setError("Kunde inte hämta ordern.");
+      }
     }
     fetchOrder();
   }, [orderId]);
+  if (error) {
+    return (
+      <Container>
+        <Card sx={{ maxWidth: 500, mx: "auto" }}>
+          <CardContent sx={{ textAlign: "center" }}>
+            <Typography variant="h5">{error}</Typography>
+          </CardContent>
+        </Card>
+      </Container>
+    );
+  }
   if (!order) {
     return (
       <Container>
