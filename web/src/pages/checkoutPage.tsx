@@ -2,9 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
+  ButtonGroup,
   Card,
   CardContent,
+  CardMedia,
   Container,
+  Divider,
   TextField,
   Typography,
 } from "@mui/material";
@@ -63,29 +66,75 @@ export default function CheckoutPage() {
       <Typography align="center">Checkout</Typography>
       <Card sx={{ maxWidth: 500, mx: "auto" }}>
         <CardContent>
-          <ul>
-            {cartItems.map((item) => (
-              <li key={item.product.id}>
-                {item.product.title} Antal: {item.quantity}
-                Price: {item.product.price * item.quantity}:sek
-                <Button
-                  onClick={() =>
-                    updateQuantity(item.product.id, item.quantity + 1)
-                  }
-                >
-                  +
-                </Button>
-                <Button
-                  onClick={() =>
-                    updateQuantity(item.product.id, item.quantity - 1)
-                  }
-                >
-                  -
-                </Button>
-              </li>
-            ))}
-          </ul>
-          Totala summan:{totalAmount}
+          <Box
+            component="ul"
+            sx={{
+              listStyle: "none",
+              padding: 0,
+              margin: 0,
+              maxHeight: "420px",
+              overflowY: "auto",
+              pr: 1,
+              "&::-webkit-scrollbar": {
+                width: "6px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: "3px",
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "transparent",
+              },
+            }}
+          > {cartItems.map((item, index) => (
+            <li key={item.product.id}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1.5rem", py: 2 }}>
+                <CardMedia
+                  component="img"
+                  alt={item.product.title}
+                  image={item.product.imageUrl}
+                  sx={{ height: "4rem", width: "5rem", border: "0.1rem solid black", borderRadius: "1.5rem" }}
+                />
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography variant="subtitle1" noWrap >
+                    {item.product.title}
+                  </Typography>
+                  <Typography variant="body2" >
+                    Antal: {item.quantity}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 1 }}>
+                  <Typography sx={{ mt: "auto", fontWeight: "bold" }}>
+                    {(item.product.price * item.quantity).toLocaleString("sv-SE")} sek
+                  </Typography>
+                  <ButtonGroup size="small" variant="outlined">
+                    <Button
+                      onClick={() =>
+                        updateQuantity(item.product.id, item.quantity + 1)
+                      }
+                      sx={{ height: "2rem", border: "0.1rem solid black" }}
+                    >
+                      <Box>+</Box>
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        updateQuantity(item.product.id, item.quantity - 1)
+                      }
+                      sx={{ height: "2rem", border: "0.1rem solid black" }}
+                    >
+                      <Box>-</Box>
+                    </Button>
+                  </ButtonGroup>
+                </Box>
+              </Box>
+              {index < cartItems.length - 1 && <Divider />}
+            </li>
+          ))}
+          </Box>
+          <Divider sx={{ my: 2 }} />
+          <Typography sx={{ mt: 2, fontWeight: "bold" }}>
+            Totala summan: {totalAmount.toLocaleString("sv-SE")} sek
+          </Typography>
         </CardContent>
       </Card>
 
