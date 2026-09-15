@@ -29,7 +29,6 @@ export default function ProductCard({ product }: ProductCardProps) {
       <CardMedia
         component="img"
         alt={product.title}
-        height="200"
         image={product.imageUrl}
         sx={{ height: "15rem" }}
       />
