@@ -58,7 +58,7 @@ export default function CheckoutPage() {
 
     const newOrder = await res.json();
     clearCart();
-    navigate("/confirmation/" + newOrder.id);
+    navigate("/confirmation/" + newOrder.orderNumber);
   }
 
   return (
@@ -86,50 +86,74 @@ export default function CheckoutPage() {
                 backgroundColor: "transparent",
               },
             }}
-          > {cartItems.map((item, index) => (
-            <li key={item.product.id}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: "1.5rem", py: 2 }}>
-                <CardMedia
-                  component="img"
-                  alt={item.product.title}
-                  image={item.product.imageUrl}
-                  sx={{ height: "4rem", width: "5rem", border: "0.1rem solid black", borderRadius: "1.5rem" }}
-                />
-                <Box sx={{ flex: 1, minWidth: 0 }}>
-                  <Typography variant="subtitle1" noWrap >
-                    {item.product.title}
-                  </Typography>
-                  <Typography variant="body2" >
-                    Antal: {item.quantity}
-                  </Typography>
+          >
+            {" "}
+            {cartItems.map((item, index) => (
+              <li key={item.product.id}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1.5rem",
+                    py: 2,
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    alt={item.product.title}
+                    image={item.product.imageUrl}
+                    sx={{
+                      height: "4rem",
+                      width: "5rem",
+                      border: "0.1rem solid black",
+                      borderRadius: "1.5rem",
+                    }}
+                  />
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography variant="subtitle1" noWrap>
+                      {item.product.title}
+                    </Typography>
+                    <Typography variant="body2">
+                      Antal: {item.quantity}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-end",
+                      gap: 1,
+                    }}
+                  >
+                    <Typography sx={{ mt: "auto", fontWeight: "bold" }}>
+                      {(item.product.price * item.quantity).toLocaleString(
+                        "sv-SE",
+                      )}{" "}
+                      sek
+                    </Typography>
+                    <ButtonGroup size="small" variant="outlined">
+                      <Button
+                        onClick={() =>
+                          updateQuantity(item.product.id, item.quantity + 1)
+                        }
+                        sx={{ height: "2rem", border: "0.1rem solid black" }}
+                      >
+                        <Box>+</Box>
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          updateQuantity(item.product.id, item.quantity - 1)
+                        }
+                        sx={{ height: "2rem", border: "0.1rem solid black" }}
+                      >
+                        <Box>-</Box>
+                      </Button>
+                    </ButtonGroup>
+                  </Box>
                 </Box>
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 1 }}>
-                  <Typography sx={{ mt: "auto", fontWeight: "bold" }}>
-                    {(item.product.price * item.quantity).toLocaleString("sv-SE")} sek
-                  </Typography>
-                  <ButtonGroup size="small" variant="outlined">
-                    <Button
-                      onClick={() =>
-                        updateQuantity(item.product.id, item.quantity + 1)
-                      }
-                      sx={{ height: "2rem", border: "0.1rem solid black" }}
-                    >
-                      <Box>+</Box>
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        updateQuantity(item.product.id, item.quantity - 1)
-                      }
-                      sx={{ height: "2rem", border: "0.1rem solid black" }}
-                    >
-                      <Box>-</Box>
-                    </Button>
-                  </ButtonGroup>
-                </Box>
-              </Box>
-              {index < cartItems.length - 1 && <Divider />}
-            </li>
-          ))}
+                {index < cartItems.length - 1 && <Divider />}
+              </li>
+            ))}
           </Box>
           <Divider sx={{ my: 2 }} />
           <Typography sx={{ mt: 2, fontWeight: "bold" }}>
