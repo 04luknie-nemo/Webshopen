@@ -11,6 +11,7 @@ https://mui.com/material-ui/getting-started/
     - npm i
     - npm run db:generate
     - npm run db:push
+    - npm run seed
     - npm run db:studio (Om man vill)
     - npm run dev
 
@@ -22,7 +23,7 @@ https://mui.com/material-ui/getting-started/
 
 - [x] Git & GitHub har använts
 - [x] Projektmappen innehåller en README.md fil - (läs ovan för mer info)
-- [ ] Uppgiften lämnas in i tid!
+- [x] Uppgiften lämnas in i tid!
 - [x] Ett designsystem/komponentbibliotek används nästintill helt uteslutande för att bygga sidan (ex: MUI, ChakraUI, Mantine, etc).
 
 **Home**
