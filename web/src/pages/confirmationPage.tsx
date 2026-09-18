@@ -13,7 +13,7 @@ import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function ConfirmationPage() {
-  const { orderId } = useParams();
+  const { orderNumber } = useParams();
 
   const [order, setOrder] = useState<any>(null);
   const [error, setError] = useState("");
@@ -23,7 +23,7 @@ export default function ConfirmationPage() {
       setOrder(null);
       setError("");
       try {
-        const res = await fetch("/v1/orders/" + orderId);
+        const res = await fetch("/v1/orders/" + orderNumber);
         if (!res.ok) {
           setError(
             res.status === 404
@@ -39,7 +39,7 @@ export default function ConfirmationPage() {
       }
     }
     fetchOrder();
-  }, [orderId]);
+  }, [orderNumber]);
   if (error) {
     return (
       <Container>
@@ -75,7 +75,7 @@ export default function ConfirmationPage() {
           }}
         >
           <Typography variant="h5" gutterBottom>
-            Your order id: {orderId}
+            Your order id: {orderNumber}
           </Typography>
           <Stack spacing={1.5}>
             {order.orderItems.map((item: any) => {
