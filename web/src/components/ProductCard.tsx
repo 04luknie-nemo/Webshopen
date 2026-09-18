@@ -23,7 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         display: "flex",
         flexDirection: "column",
         maxWidth: "345px",
-        height: "24rem",
+        height: "25rem",
       }}
     >
       <CardMedia
@@ -33,8 +33,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         sx={{ height: "15rem" }}
       />
 
-      <CardContent sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
-        <Typography gutterBottom variant="h6" component="div">
+      <CardContent sx={{ display: "flex", flexDirection: "column" }}>
+        <Typography gutterBottom variant="h6" component="div" noWrap>
           {product.title}
         </Typography>
 

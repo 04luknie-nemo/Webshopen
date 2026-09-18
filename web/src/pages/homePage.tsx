@@ -30,7 +30,11 @@ export default function HomePage() {
       </Typography>
       <Grid container spacing={2} sx={{ justifyContent: "center" }}>
         {getQuery.data?.map((product) => (
-          <Grid key={product.id} size={{ xs: 12, sm: 6, md: 4 }}>
+          <Grid
+            key={product.id}
+            size={{ xs: 10, sm: 6, md: 4 }}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
             <ProductCard product={product} />
           </Grid>
         ))}
