@@ -1,104 +1,95 @@
 import {
-    Alert,
-    Box,
-    Button,
-    Container,
-    Paper,
-    Stack,
-    Typography,
+  Alert,
+  Box,
+  Button,
+  Container,
+  Paper,
+  Stack,
+  Typography,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
+import { getOneProduct } from "../api/products";
 import { useCart } from "../context/cartContext";
 import { useToast } from "../context/toastContext";
-import { initialProducts } from "../mockData";
-import { getOneProduct } from "../api/products";
-import { useQuery } from "@tanstack/react-query";
 
 export default function ProductDetailPage() {
-    const { addToCart } = useCart();
-    const { showToast } = useToast();
-    const { id } = useParams();
-    const productId = Number(id);
+  const { addToCart } = useCart();
+  const { showToast } = useToast();
+  const { id } = useParams();
+  const productId = Number(id);
 
-    const getQuery = useQuery({
-        queryKey: ["product", productId.toString()],
-        queryFn: () => getOneProduct(productId)
-    })
+  const getQuery = useQuery({
+    queryKey: ["product", productId.toString()],
+    queryFn: () => getOneProduct(productId),
+  });
 
-    if (getQuery.isError) {
-            return (
-                <Container maxWidth="lg" sx={{ mt: 4, textAlign: "center" }}>
-                    <Alert severity="error">{getQuery.error.message}</Alert>
-                </Container>
-            );
-        }
-    
-
-
-    const product = getQuery.data;
-
-    if (!product) {
-        return (
-            <Container sx={{ py: 4 }}>
-                <Typography>Produkten hittades inte.</Typography>
-            </Container>
-        );
-    }
-
+  if (getQuery.isError) {
     return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-            <Paper elevation={2} sx={{ p: { xs: 2, md: 4 }, borderRadius: 3 }}>
-                <Stack direction={{ xs: "column", md: "row" }} spacing={4}>
-                    <Box
-                        component="img"
-                        src={product.imageUrl}
-                        alt={product.title}
-                        sx={{
-                            width: { xs: "100%", md: "50%" },
-                            height: { xs: 260, md: 400 },
-                            objectFit: "contain",
-                            borderRadius: 2,
-                        }}
-                    />
-
-                    <Stack spacing={2} sx={{ flex: 1 }}>
-                        <Typography variant="h4" component="h1">
-                            {product.title}
-                        </Typography>
-
-                        <Typography color="text.secondary">
-                            {product.description}
-                        </Typography>
-
-                        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                            {product.price} kr
-                        </Typography>
-
-                        <Typography
-                            color={
-                                product.stock > 0
-                                    ? "success.main"
-                                    : "error.main"
-                            }
-                        >
-                            {product.stock > 0
-                                ? `${product.stock} st i lager`
-                                : "Slut i lager"}
-                        </Typography>
-                        <Button
-                            variant="contained"
-                            onClick={() => {
-                                addToCart(product);
-                                showToast(
-                                    `${product.title} har lagts till i kundvagnen`,
-                                );
-                            }}
-                        >
-                            Lägg i kundvagn
-                        </Button>
-                    </Stack>
-                </Stack>
-            </Paper>
-        </Container>
+      <Container maxWidth="lg" sx={{ mt: 4, textAlign: "center" }}>
+        <Alert severity="error">{getQuery.error.message}</Alert>
+      </Container>
     );
+  }
+
+  const product = getQuery.data;
+
+  if (!product) {
+    return (
+      <Container sx={{ py: 4 }}>
+        <Typography>Produkten hittades inte.</Typography>
+      </Container>
+    );
+  }
+
+  return (
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Paper elevation={2} sx={{ p: { xs: 2, md: 4 }, borderRadius: 3 }}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={4}>
+          <Box
+            component="img"
+            src={product.imageUrl}
+            alt={product.title}
+            sx={{
+              width: { xs: "100%", md: "50%" },
+              height: { xs: 260, md: 400 },
+              objectFit: "contain",
+              borderRadius: 2,
+            }}
+          />
+
+          <Stack spacing={2} sx={{ flex: 1 }}>
+            <Typography variant="h4" component="h1">
+              {product.title}
+            </Typography>
+
+            <Typography color="text.secondary">
+              {product.description}
+            </Typography>
+
+            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+              {product.price} kr
+            </Typography>
+
+            <Typography
+              color={product.stock > 0 ? "success.main" : "error.main"}
+            >
+              {product.stock > 0
+                ? `${product.stock} st i lager`
+                : "Slut i lager"}
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={() => {
+                addToCart(product);
+                showToast(`${product.title} har lagts till i kundvagnen`);
+              }}
+            >
+              Lägg i kundvagn
+            </Button>
+          </Stack>
+        </Stack>
+      </Paper>
+    </Container>
+  );
 }
