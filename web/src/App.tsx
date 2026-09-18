@@ -1,9 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import MainLayout from "./mainLayout";
+import AboutPage from "./pages/about";
 import AdminPage from "./pages/adminPage";
 import CheckoutPage from "./pages/checkoutPage";
 import ConfirmationPage from "./pages/confirmationPage";
+import ContactPage from "./pages/contact";
 import HomePage from "./pages/homePage";
+import PolicyPage from "./pages/policy";
 import ProductDetailPage from "./pages/productDetailPage";
 
 export default function App() {
@@ -20,6 +23,9 @@ export default function App() {
             />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/policy" element={<PolicyPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
