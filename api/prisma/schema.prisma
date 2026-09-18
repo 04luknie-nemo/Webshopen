@@ -53,6 +53,7 @@ model CartItem {
 
 model Order {
   id                Int         @id @default(autoincrement())
+  orderNumber       String      @unique
   totalPrice        Decimal
   createdAt         DateTime
   estimatedDelivery DateTime

@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function ConfirmationPage() {
-  const { orderId } = useParams();
+  const { orderNumber } = useParams();
 
   const [order, setOrder] = useState<any>(null);
   const [error, setError] = useState("");
@@ -14,9 +14,13 @@ export default function ConfirmationPage() {
       setOrder(null);
       setError("");
       try {
-        const res = await fetch("/v1/orders/" + orderId);
+        const res = await fetch("/v1/orders/" + orderNumber);
         if (!res.ok) {
-          setError(res.status === 404 ? "Ordern finns inte." : "Kunde inte hämta ordern.");
+          setError(
+            res.status === 404
+              ? "Ordern finns inte."
+              : "Kunde inte hämta ordern.",
+          );
           return;
         }
         const data = await res.json();
@@ -26,7 +30,7 @@ export default function ConfirmationPage() {
       }
     }
     fetchOrder();
-  }, [orderId]);
+  }, [orderNumber]);
   if (error) {
     return (
       <Container>
@@ -50,7 +54,7 @@ export default function ConfirmationPage() {
       <Card sx={{ maxWidth: 500, mx: "auto" }}>
         <CardContent sx={{ textAlign: "center" }}>
           <Typography variant="h5" gutterBottom>
-            Your order id: {orderId}
+            Your order id: {orderNumber}
           </Typography>
           <ul>
             {order.orderItems.map((item: any) => (
